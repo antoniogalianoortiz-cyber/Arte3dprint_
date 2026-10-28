@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12263a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arte3dprint">
+<title>Arte3dprint · Gestión</title>
+<style>
+:root{--ink:#12263a;--paper:#f5f6f2;--card:#fff;--mute:#66757f;--line:#dde2de;--acc:#00a896;--ing:#00a896;--gas:#e4572e;--pos:#1e8e5a;--neg:#c8381a}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:16px/1.4 "Avenir Next",system-ui,sans-serif;background:var(--paper);color:var(--ink);display:flex;flex-direction:column}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.btn{padding:12px 16px;border:0;border-radius:8px;background:var(--ink);color:#fff;font-weight:700;width:100%}
+header{padding:calc(12px + env(safe-area-inset-top)) 16px 12px;color:#fff;display:flex;align-items:center;
+ background:repeating-linear-gradient(0deg,rgba(255,255,255,.06) 0 2px,transparent 2px 6px),var(--ink)}
+.logo{flex:1;font-weight:800;font-size:22px;letter-spacing:.04em}
+.logo b{color:var(--acc)}
+header button{background:none;border:0;color:#9fb3c0;padding:6px}
+main{flex:1;overflow-y:auto;padding:14px 14px 90px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;padding:13px 4px;border:0;background:none;color:var(--mute);font-weight:700;border-top:3px solid transparent}
+nav button.on{color:var(--ink);border-top-color:var(--acc)}
+h2{margin:6px 0 10px;font-size:20px}
+details{background:var(--card);border-radius:10px;border:1px solid var(--line);margin-bottom:14px}
+summary{padding:13px 14px;font-weight:700;cursor:pointer}
+form.f{display:grid;gap:10px;padding:0 14px 14px}
+label{font-size:13px;color:var(--mute);display:grid;gap:4px}
+.chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.chip{flex:none;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;font-size:14px}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:5px solid var(--c,var(--line))}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.t{font-weight:700}
+.s{font-size:14px;color:var(--mute)}
+.price{font-weight:800;white-space:nowrap}
+.acts{display:flex;gap:8px;margin-top:8px;align-items:center}
+.acts select{width:auto;flex:1;padding:8px;font-weight:700}
+.acts button{background:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--mute)}
+.e0{--c:#f2a900}.e1{--c:#2f7de1}.e2{--c:#8e5bd6}.e3{--c:#1e8e5a}
+.empty{color:var(--mute);text-align:center;padding:30px 10px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.tile small{color:var(--mute);display:block}
+.tile strong{font-size:20px}
+.tile.big{grid-column:1/-1;background:var(--ink);color:#fff}
+.tile.big small{color:#9fb3c0}
+.pos{color:var(--pos)}.neg{color:var(--neg)}.tile.big .pos{color:#5fe0a6}.tile.big .neg{color:#ff8f73}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--mute);margin:4px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
+svg .ax{font-size:11px;fill:var(--mute)}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border-radius:10px;overflow:hidden}
+th,td{padding:9px 8px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;color:var(--mute)}
+#login{margin:auto;width:min(340px,90%);display:grid;gap:12px}
+#login h1{margin:0;font-size:28px;letter-spacing:.04em}
+#err{color:var(--neg);margin:0;min-height:1.2em;font-size:14px}
+#quien{margin:auto;width:min(340px,90%);display:grid;gap:14px;text-align:center}
+#quien h1{margin:0 0 6px}
+#quien button{padding:24px;border:0;border-radius:12px;font-size:22px;font-weight:800;letter-spacing:.06em;color:#fff}
+#quien button[data-q=Antonio]{background:var(--ink)}
+#quien button[data-q=Paula]{background:#8e5bd6}
+.who{margin-top:8px;font-size:13px;color:var(--mute)}
+.qn{display:inline-block;padding:1px 8px;border-radius:99px;color:#fff;font-weight:700;font-size:12px}
+.q-antonio{background:var(--ink)}.q-paula{background:#8e5bd6}
+.who details{border:0;background:none;margin:4px 0 0}
+.who summary{padding:2px 0;font-weight:600}
+</style>
+</head>
+<body>
+
+<form id="login" hidden>
+  <h1>ARTE<span style="color:var(--acc)">3D</span>PRINT</h1>
+  <input id="email" type="email" placeholder="Correo" autocomplete="username" required>
+  <input id="pass" type="password" placeholder="Contraseña" autocomplete="current-password" required>
+  <p id="err"></p>
+  <button class="btn" type="submit">Entrar</button>
+</form>
+
+<div id="quien" hidden>
+  <h1>¿Quién eres?</h1>
+  <button data-q="Antonio">ANTONIO</button>
+  <button data-q="Paula">PAULA</button>
+</div>
+
+<div id="app" hidden style="display:none;flex:1;flex-direction:column;min-height:0">
+  <header><div class="logo">ARTE<b>3D</b>PRINT</div><button id="yo" aria-label="Cambiar de persona"></button><button id="out">Salir</button></header>
+  <main>
+    <section id="v-ped">
+      <details id="d-ped"><summary>Nuevo pedido</summary>
+        <form class="f" id="f-ped">
+          <label>Qué se ha pedido<input name="producto" required placeholder="Ej: Funko personalizado"></label>
+          <label>Nombre del cliente<input name="cliente" required></label>
+          <label>Provincia<input name="provincia" list="prov" required></label>
+          <label>Número de envío<input name="envio" placeholder="Se puede añadir después"></label>
+          <label>Estado<select name="estado"></select></label>
+          <label>Precio (€)<input name="precio" type="number" step="0.01" min="0" required inputmode="decimal"></label>
+          <label>Fecha<input name="fecha" type="date" required></label>
+          <button class="btn" type="submit">Guardar pedido</button>
+        </form>
+      </details>
+      <div class="chips" id="chips"></div>
+      <div id="l-ped"></div>
+    </section>
+
+    <section id="v-gas" hidden>
+      <details id="d-gas"><summary>Nuevo gasto</summary>
+        <form class="f" id="f-gas">
+          <label>En qué hemos gastado<input name="concepto" required placeholder="Ej: Filamento PLA, cajas, envíos"></label>
+          <label>Mes<input name="mes" type="month" required></label>
+          <label>Importe (€)<input name="importe" type="number" step="0.01" min="0" required inputmode="decimal"></label>
+          <button class="btn" type="submit">Guardar gasto</button>
+        </form>
+      </details>
+      <div id="l-gas"></div>
+    </section>
+
+    <section id="v-bal" hidden>
+      <label>Mes del extracto<input id="mes-bal" type="month"></label>
+      <div class="tiles" id="tiles"></div>
+      <h2>Últimos 6 meses</h2>
+      <div class="legend"><span><i style="background:var(--ing)"></i>Ingresos</span><span><i style="background:var(--gas)"></i>Gastos</span></div>
+      <div id="chart"></div>
+      <h2>Todos los meses</h2>
+      <div id="tabla"></div>
+    </section>
+  </main>
+  <nav>
+    <button data-v="ped" class="on">Pedidos</button>
+    <button data-v="gas">Gastos</button>
+    <button data-v="bal">Balance</button>
+  </nav>
+</div>
+
+<datalist id="prov"></datalist>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDO2tL9E0ZxaXjuiu9pEAxYxUIYhGN4fU8",
+  authDomain: "arte3dprint-9b321.firebaseapp.com",
+  projectId: "arte3dprint-9b321",
+  storageBucket: "arte3dprint-9b321.firebasestorage.app",
+  messagingSenderId: "306235845250",
+  appId: "1:306235845250:web:1a685f5f1d9ed4e636a29b"
+};
+const auth = getAuth(initializeApp(firebaseConfig));
+const db = getFirestore();
+const PED = "a3d_pedidos", GAS = "a3d_gastos";
+const ESTADOS = ["Pagado", "En curso", "Listo para enviar", "Enviado"];
+const PROV = "A Coruña,Álava,Albacete,Alicante,Almería,Asturias,Ávila,Badajoz,Baleares,Barcelona,Burgos,Cáceres,Cádiz,Cantabria,Castellón,Ciudad Real,Córdoba,Cuenca,Girona,Granada,Guadalajara,Guipúzcoa,Huelva,Huesca,Jaén,La Rioja,Las Palmas,León,Lleida,Lugo,Madrid,Málaga,Murcia,Navarra,Ourense,Palencia,Pontevedra,Salamanca,Santa Cruz de Tenerife,Segovia,Sevilla,Soria,Tarragona,Teruel,Toledo,Valencia,Valladolid,Vizcaya,Zamora,Zaragoza,Ceuta,Melilla".split(",");
+
+const $ = id => document.getElementById(id);
+const sum = (a, k) => a.reduce((t, x) => t + (Number(x[k]) || 0), 0);
+const eur = n => n.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
+const eur0 = n => Math.round(n).toLocaleString("es-ES") + " €";
+const mesDe = f => (f || "").slice(0, 7);
+const nombreMes = k => { const [y, m] = k.split("-").map(Number); return new Date(y, m - 1, 1).toLocaleDateString("es-ES", { month: "short" }); };
+const largoMes = k => { const [y, m] = k.split("-").map(Number); return new Date(y, m - 1, 1).toLocaleDateString("es-ES", { month: "long", year: "numeric" }); };
+const hoy = () => new Date().toISOString().slice(0, 10);
+const svgEl = (tag, attrs, txt) => { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (txt != null) e.textContent = txt; return e; };
+function h(tag, props = {}, ...kids) { const e = document.createElement(tag); Object.assign(e, props); e.append(...kids); return e; }
+
+let pedidos = [], gastos = [], filtro = "", unsubs = [];
+
+PROV.forEach(p => $("prov").append(h("option", { value: p })));
+ESTADOS.forEach(s => document.querySelector("#f-ped [name=estado]").append(h("option", { value: s, textContent: s })));
+
+let quien = "", usuario = null;
+try { quien = localStorage.getItem("quien") || ""; } catch {}
+const fmt = t => t ? new Date(t).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
+const log = texto => ({ q: quien, t: texto, d: Date.now() });
+const edita = (col, id, campos, texto) => updateDoc(doc(db, col, id), { ...campos, historial: arrayUnion(log(texto)) });
+
+function pantalla() {
+  $("login").hidden = !!usuario;
+  $("quien").hidden = !usuario || !!quien;
+  $("app").style.display = usuario && quien ? "flex" : "none";
+  $("yo").textContent = quien ? quien + " ⇄" : "";
+}
+onAuthStateChanged(auth, user => {
+  unsubs.forEach(u => u()); unsubs = [];
+  usuario = user; pantalla();
+  if (user) start();
+});
+document.querySelectorAll("#quien button").forEach(b => b.onclick = () => {
+  quien = b.dataset.q;
+  try { localStorage.setItem("quien", quien); } catch {}
+  pantalla();
+});
+$("yo").onclick = () => { quien = ""; try { localStorage.removeItem("quien"); } catch {} pantalla(); };
+
+function chipQ(n) { return h("span", { className: "qn q-" + (n || "").toLowerCase(), textContent: n || "?" }); }
+function autoria(x) {
+  const hist = (x.historial || []).slice().sort((a, b) => b.d - a.d);
+  const wrap = h("div", { className: "who" });
+  if (!hist.length) return wrap;
+  const linea = e => h("div", {}, chipQ(e.q), document.createTextNode(" " + e.t + " · " + fmt(e.d)));
+  wrap.append(linea(hist[0]));
+  if (hist.length > 1) {
+    const d = h("details", {}, h("summary", { textContent: "Historial (" + hist.length + ")" }));
+    hist.slice(1).forEach(e => d.append(linea(e)));
+    wrap.append(d);
+  }
+  return wrap;
+}
+$("login").onsubmit = async e => {
+  e.preventDefault(); $("err").textContent = "";
+  try { await signInWithEmailAndPassword(auth, $("email").value.trim(), $("pass").value); }
+  catch { $("err").textContent = "Correo o contraseña incorrectos."; }
+};
+$("out").onclick = () => signOut(auth);
+
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x === b));
+  ["ped", "gas", "bal"].forEach(v => $("v-" + v).hidden = v !== b.dataset.v);
+  document.querySelector("main").scrollTop = 0;
+});
+
+function start() {
+  document.querySelector("#f-ped [name=fecha]").value = hoy();
+  document.querySelector("#f-gas [name=mes]").value = hoy().slice(0, 7);
+  $("mes-bal").value = hoy().slice(0, 7);
+  unsubs.push(onSnapshot(collection(db, PED), s => { pedidos = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }));
+  unsubs.push(onSnapshot(collection(db, GAS), s => { gastos = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }));
+}
+
+$("f-ped").onsubmit = async e => {
+  e.preventDefault();
+  const f = Object.fromEntries(new FormData(e.target));
+  await addDoc(collection(db, PED), { ...f, precio: Number(f.precio), ts: serverTimestamp(), historial: [log("Creó el pedido")] });
+  e.target.reset(); e.target.fecha.value = hoy(); $("d-ped").open = false;
+};
+$("f-gas").onsubmit = async e => {
+  e.preventDefault();
+  const f = Object.fromEntries(new FormData(e.target));
+  await addDoc(collection(db, GAS), { ...f, importe: Number(f.importe), ts: serverTimestamp(), historial: [log("Añadió el gasto")] });
+  e.target.reset(); e.target.mes.value = hoy().slice(0, 7); $("d-gas").open = false;
+};
+$("mes-bal").onchange = () => renderBalance();
+
+function render() { renderPedidos(); renderGastos(); renderBalance(); }
+
+function renderPedidos() {
+  const chips = $("chips"); chips.textContent = "";
+  [["", "Todos (" + pedidos.length + ")"], ...ESTADOS.map(s => [s, s + " (" + pedidos.filter(p => p.estado === s).length + ")"])].forEach(([v, t]) =>
+    chips.append(h("button", { className: "chip" + (filtro === v ? " on" : ""), textContent: t, onclick: () => { filtro = v; renderPedidos(); } })));
+  const box = $("l-ped"); box.textContent = "";
+  const lista = pedidos.filter(p => !filtro || p.estado === filtro).sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+  if (!lista.length) { box.append(h("p", { className: "empty", textContent: pedidos.length ? "No hay pedidos con este estado." : "Aún no hay pedidos. Añade el primero arriba." })); return; }
+  lista.forEach(p => {
+    const sel = h("select");
+    ESTADOS.forEach(s => sel.append(h("option", { value: s, textContent: s, selected: s === p.estado })));
+    sel.onchange = () => edita(PED, p.id, { estado: sel.value }, "Estado: " + p.estado + " → " + sel.value);
+    const envio = h("button", { textContent: p.envio ? "Envío: " + p.envio : "Añadir nº de envío", onclick: () => { const v = prompt("Número de envío", p.envio || ""); if (v !== null) edita(PED, p.id, { envio: v.trim() }, "Nº de envío: " + (v.trim() || "vacío")); } });
+    const del = h("button", { textContent: "✕", onclick: () => { if (confirm("¿Borrar el pedido de " + p.cliente + "?")) deleteDoc(doc(db, PED, p.id)); } });
+    del.setAttribute("aria-label", "Borrar pedido");
+    box.append(h("div", { className: "card e" + Math.max(0, ESTADOS.indexOf(p.estado)) },
+      h("div", { className: "row" }, h("span", { className: "t", textContent: p.producto }), h("span", { className: "price", textContent: eur(Number(p.precio) || 0) })),
+      h("div", { className: "s", textContent: p.cliente + " · " + p.provincia + " · " + (p.fecha || "") }),
+      h("div", { className: "acts" }, sel, envio, del),
+      autoria(p)));
+  });
+}
+
+function renderGastos() {
+  const box = $("l-gas"); box.textContent = "";
+  if (!gastos.length) { box.append(h("p", { className: "empty", textContent: "Aún no hay gastos. Añade el primero arriba." })); return; }
+  [...gastos].sort((a, b) => (b.mes || "").localeCompare(a.mes || "")).forEach(g => {
+    const del = h("button", { textContent: "✕", onclick: () => { if (confirm("¿Borrar «" + g.concepto + "»?")) deleteDoc(doc(db, GAS, g.id)); } });
+    del.setAttribute("aria-label", "Borrar gasto");
+    box.append(h("div", { className: "card", style: "--c:var(--gas)" },
+      h("div", { className: "row" }, h("span", { className: "t", textContent: g.concepto }), h("span", { className: "price", textContent: eur(Number(g.importe) || 0) })),
+      h("div", { className: "acts" }, h("span", { className: "s", style: "flex:1", textContent: largoMes(g.mes) }), del),
+      autoria(g)));
+  });
+}
+
+function ingMes(k) { return sum(pedidos.filter(p => mesDe(p.fecha) === k), "precio"); }
+function gasMes(k) { return sum(gastos.filter(g => g.mes === k), "importe"); }
+const cls = n => n >= 0 ? "pos" : "neg";
+
+function renderBalance() {
+  const k = $("mes-bal").value || hoy().slice(0, 7);
+  const ing = ingMes(k), gas = gasMes(k), bal = ing - gas;
+  const n = pedidos.filter(p => mesDe(p.fecha) === k).length;
+  const t = $("tiles"); t.textContent = "";
+  const tile = (lab, val, extra = "") => h("div", { className: "tile " + extra }, h("small", { textContent: lab }), h("strong", { textContent: val, className: extra.includes("big") ? cls(bal) : "" }));
+  t.append(tile("Balance de " + largoMes(k), (bal >= 0 ? "+" : "") + eur(bal), "big"));
+  t.append(h("div", { className: "tile" }, h("small", { textContent: "Ganancias (" + n + " pedidos)" }), h("strong", { textContent: eur(ing) })));
+  t.append(h("div", { className: "tile" }, h("small", { textContent: "Pérdidas (gastos)" }), h("strong", { textContent: eur(gas) })));
+
+  const [y, m] = k.split("-").map(Number);
+  const meses = [];
+  for (let i = 5; i >= 0; i--) { const d = new Date(y, m - 1 - i, 1); meses.push(d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0")); }
+  const datos = meses.map(x => ({ k: x, i: ingMes(x), g: gasMes(x) }));
+  const max = Math.max(1, ...datos.flatMap(d => [d.i, d.g]));
+  const W = 360, base = 160, alto = 140;
+  const s = svgEl("svg", { viewBox: "0 0 360 182", role: "img", "aria-label": "Ingresos y gastos de los últimos 6 meses" });
+  s.append(svgEl("text", { x: 2, y: 10, class: "ax" }, eur0(max)));
+  datos.forEach((d, i) => {
+    const x = i * 60 + 10;
+    [[d.i, "var(--ing)", x], [d.g, "var(--gas)", x + 22]].forEach(([v, c, xx]) => {
+      const hh = v / max * alto;
+      s.append(svgEl("rect", { x: xx, y: base - hh, width: 20, height: hh, rx: 3, fill: c }));
+    });
+    s.append(svgEl("text", { x: x + 21, y: base + 16, "text-anchor": "middle", class: "ax" }, nombreMes(d.k)));
+  });
+  s.append(svgEl("line", { x1: 0, x2: W, y1: base, y2: base, stroke: "var(--line)" }));
+  $("chart").textContent = ""; $("chart").append(s);
+
+  const todos = [...new Set([...pedidos.map(p => mesDe(p.fecha)), ...gastos.map(g => g.mes)].filter(Boolean))].sort().reverse();
+  const tb = $("tabla"); tb.textContent = "";
+  if (!todos.length) { tb.append(h("p", { className: "empty", textContent: "Cuando haya pedidos y gastos, aquí verás el extracto de cada mes." })); return; }
+  const tabla = h("table", {}, h("tr", {}, ...["Mes", "Ganado", "Gastado", "Balance"].map(x => h("th", { textContent: x }))));
+  todos.forEach(x => { const a = ingMes(x), b = gasMes(x); tabla.append(h("tr", {}, h("td", { textContent: largoMes(x) }), h("td", { textContent: eur0(a) }), h("td", { textContent: eur0(b) }), h("td", { textContent: eur0(a - b), className: cls(a - b) }))); });
+  const ta = sum(pedidos, "precio"), tg = sum(gastos, "importe");
+  tabla.append(h("tr", { style: "font-weight:800" }, h("td", { textContent: "Total" }), h("td", { textContent: eur0(ta) }), h("td", { textContent: eur0(tg) }), h("td", { textContent: eur0(ta - tg), className: cls(ta - tg) })));
+  tb.append(tabla);
+}
+</script>
+</body>
+</html>
